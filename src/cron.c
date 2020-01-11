@@ -171,6 +171,10 @@ static void handle_signals(cron_db * database) {
 	}
 }
 
+// zeamoceq - Sailfish 'sleep'
+#include "../libiphb/libiphb.h"
+iphb_t g_iphbdHandler;
+
 static void usage(void) {
 	const char **dflags;
 
@@ -349,6 +353,8 @@ int main(int argc, char *argv[]) {
 	 * timeRunning: is the time we last awakened.
 	 * clockTime: is the time when set_time was last called.
 	 */
+    // zeamoceq - Sailfish libiphb
+    g_iphbdHandler = iphb_open(0);
 	while (!got_sigintterm) {
 		int timeDiff;
 		enum timejump wakeupKind;
@@ -489,6 +495,8 @@ int main(int argc, char *argv[]) {
 	log_it("CRON", pid, "INFO", "Shutting down", 0);
 
 	(void) unlink(_PATH_CRON_PID);
+    // zeamoceq - Sailfish libiphb
+    iphb_close(g_iphbdHandler);
 
 	return 0;
 }
@@ -631,7 +639,24 @@ static void cron_sleep(int target, cron_db * db) {
 			seconds_to_wait));
 
 	while (seconds_to_wait > 0 && seconds_to_wait < 65) {
-		sleep((unsigned int) seconds_to_wait);
+        int sockfd;
+        fd_set readfds;
+        struct timeval timeout;
+        time_t r;
+
+        sockfd = iphb_get_fd(g_iphbdHandler);
+        int delta = seconds_to_wait / 4;
+        r = iphb_wait(g_iphbdHandler, seconds_to_wait - delta, seconds_to_wait + delta, 0);
+
+        FD_ZERO(&readfds);
+        FD_SET(sockfd, &readfds);
+
+        timeout.tv_sec = seconds_to_wait + 2;
+        timeout.tv_usec = 0;
+        select(sockfd + 1, &readfds, NULL, NULL, &timeout);
+
+        seconds_to_wait = 0;
+		// sleep((unsigned int) seconds_to_wait);
 
 		if (got_sigintterm)
 			return;
