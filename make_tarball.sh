@@ -7,6 +7,7 @@ fi
 VERSION=${1}
 TGTDIR=$2
 #
+# make sure to remove "include man/Makemodule.am" from Makefile.am to prevent man pages
 mkdir /tmp/cronie-${VERSION}
 cp -r -- * /tmp/cronie-${VERSION}/
 cd /tmp || exit

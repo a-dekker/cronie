@@ -13,6 +13,8 @@ dist_noinst_HEADERS = \
 EXTRA_DIST += \
 	README.anacron \
 	COPYING.anacron \
+	COPYING.obstack \
+	obstack/obstack.h \
 	cronie.init \
 	crond.sysconfig \
 	contrib/anacrontab \
@@ -30,5 +32,4 @@ EXTRA_DIST += pam/crond
 endif
 
 include anacron/Makemodule.am
-include man/Makemodule.am
 include src/Makemodule.am
