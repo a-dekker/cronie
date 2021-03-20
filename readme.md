@@ -7,9 +7,16 @@ SELinux.
 And why cronie? [http://www.urbandictionary.com/define.php?term=cronie]
 
 # Download
-Latest released version is 1.5.5.
+Latest released version is 1.5.6.
 
 User visible changes:
+
+Release 1.5.6
+
+- crontab: crontab without arguments now works if stdin is not a TTY
+- crond: Fix various issues on loading the crontab databases on startup
+- anacron: Expand MAILTO and MAILFROM environment variables
+- crontab: New option to test crontab file syntax without installing it
 
 Release 1.5.5
 - Explicitly validate upper end of range and step to disallow entries
@@ -43,9 +50,10 @@ Cronie is packaged by these distributions:
 - Source Mage [http://dbg.download.sourcemage.org/grimoire/codex/stable/utils/cronie/]
 - openSUSE [https://software.opensuse.org/package/cronie]
 - Arch Linux [https://www.archlinux.org/packages/core/x86_64/cronie/]
+- Void Linux [https://github.com/void-linux/void-packages/tree/master/srcpkgs/cronie]
 
 # Contact
 
 Mailing list: `cronie-devel AT lists.fedorahosted DOT org`
 
-Bugs can be filled either into the issue tracker at this site or into [https://bugzilla.redhat.com/] Fedora product, component cronie. 
+To report bugs please use the github issue tracker of this project.
